@@ -1,5 +1,6 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Pizza from './Pizza'
+import axios from 'axios'
 
 const PIZZA_SIZES = [
   {
@@ -19,15 +20,56 @@ const PIZZA_SIZES = [
   },
 ]
 
+const intl = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+})
+
+type PizzaSize = 'S' | 'M' | 'L'
+interface IPizza {
+  id: string
+  name: string
+  description: string
+  sizes: Record<PizzaSize, number>
+  category: string
+  image: string
+}
+
 function Order() {
-  const [pizzaSize, setPizzaSize] = useState<string>('M')
+  const [loading, setLoading] = useState<boolean>(true)
+  const [pizzas, setPizzas] = useState<IPizza[]>([])
   const [pizzaType, setPizzaType] = useState<string>('pepperoni')
+  const [pizzaSize, setPizzaSize] = useState<PizzaSize>('M')
+  let selectedPizza: IPizza | undefined = undefined
+  let selectedPizzaPrice = 0
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get('/api/pizzas')
+      if (data) {
+        setPizzas(
+          data.sort((a: IPizza, b: IPizza) => a.name.localeCompare(b.name)),
+        )
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (loading) {
+    return <>Loading...</>
+  }
+
+  selectedPizza = pizzas.find((pizza) => pizza.id === pizzaType)
+  selectedPizzaPrice = selectedPizza?.sizes[pizzaSize] ?? 0
 
   return (
     <div className="order">
       <h2>Create Order</h2>
       <form>
+        {/* Order Form */}
         <div>
+          {/* Pizza Type */}
           <div>
             <label htmlFor="pizza-type">Pizza Type</label>
             <select
@@ -35,11 +77,15 @@ function Order() {
               value={pizzaType}
               onChange={(e) => setPizzaType(e.target.value)}
             >
-              <option value="pepperoni">The Pepperoni Pizza</option>
-              <option value="hawaiian">The Hawaiian Pizza</option>
-              <option value="big_meat">The Big Meat Pizza</option>
+              {pizzas.map(({ id, name }) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
             </select>
           </div>
+
+          {/* Pizza Size */}
           <div>
             <label htmlFor="pizza-size">Pizza Size</label>
             <div>
@@ -51,23 +97,28 @@ function Order() {
                     type="radio"
                     value={value}
                     defaultChecked={pizzaSize === value}
-                    onChange={(e) => setPizzaSize(e.target.value)}
+                    onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
                   />
                   <label htmlFor={id}>{name}</label>
                 </span>
               ))}
             </div>
           </div>
+
           <button type="submit">Add to Cart</button>
         </div>
-        <div className="order-pizza">
-          <Pizza
-            name="Pepperoni"
-            description="Mozzarella Cheese, Pepperoni"
-            image="/public/pizzas/pepperoni.webp"
-          />
-          <p>$13.37</p>
-        </div>
+
+        {/* Selected Pizza */}
+        {selectedPizza && (
+          <div className="order-pizza">
+            <Pizza
+              name={selectedPizza.name}
+              description={selectedPizza.description}
+              image={selectedPizza.image}
+            />
+            <p>{intl.format(selectedPizzaPrice)}</p>
+          </div>
+        )}
       </form>
     </div>
   )
