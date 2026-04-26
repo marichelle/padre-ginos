@@ -43,16 +43,15 @@ function Order() {
   let selectedPizza: IPizza | undefined = undefined
   let selectedPizzaPrice = 0
 
+  const fetchData = async () => {
+    // Simulate delay
+    // await new Promise((resolve) => setTimeout(resolve, 5000))
+    const { data } = await axios.get('/api/pizzas')
+    setPizzas(data.sort((a: IPizza, b: IPizza) => a.name.localeCompare(b.name)))
+    setLoading(false)
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios.get('/api/pizzas')
-      if (data) {
-        setPizzas(
-          data.sort((a: IPizza, b: IPizza) => a.name.localeCompare(b.name)),
-        )
-        setLoading(false)
-      }
-    }
     fetchData()
   }, [])
 
