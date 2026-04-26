@@ -1,30 +1,9 @@
 import { useEffect, useState } from 'react'
 import Pizza from './Pizza'
 import axios from 'axios'
-import { IPizza, PizzaSize } from './types'
-
-const PIZZA_SIZES = [
-  {
-    id: 'pizza-s',
-    name: 'Small',
-    value: 'S',
-  },
-  {
-    id: 'pizza-m',
-    name: 'Medium',
-    value: 'M',
-  },
-  {
-    id: 'pizza-l',
-    name: 'Large',
-    value: 'L',
-  },
-]
-
-const intl = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-})
+import { IPizza, PizzaSize } from '../types'
+import { intl } from '../helpers'
+import { PIZZA_SIZES } from '../constants'
 
 function Order() {
   const [loading, setLoading] = useState<boolean>(true)

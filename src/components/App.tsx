@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import { FC, StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import Order from './Order'
 
 const App: FC = () => {
   return (
-    <div>
+    <StrictMode>
       <Order />
-    </div>
+    </StrictMode>
   )
 }
 
