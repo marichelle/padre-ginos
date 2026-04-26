@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import { memo, type FC } from 'react'
 
 interface PizzaProps {
   name: string
@@ -6,7 +6,8 @@ interface PizzaProps {
   image: string
 }
 
-const Pizza: FC<PizzaProps> = ({ name, description, image }) => {
+const Pizza: FC<PizzaProps> = memo(({ name, description, image }) => {
+  console.info('🚀 -> Pizza -> name:', name)
   return (
     <div className="pizza">
       <h1>{name}</h1>
@@ -14,6 +15,6 @@ const Pizza: FC<PizzaProps> = ({ name, description, image }) => {
       <img src={image} alt={name} />
     </div>
   )
-}
+})
 
 export default Pizza
