@@ -1,19 +1,38 @@
 import js from '@eslint/js'
 import globals from 'globals'
 import prettier from 'eslint-config-prettier'
+import reactPlugin from 'eslint-plugin-react'
+import tsParser from '@typescript-eslint/parser'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.js'],
+    ...reactPlugin.configs.flat.recommended,
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+  },
+  reactPlugin.configs.flat['jsx-runtime'],
+  tsPlugin.configs.recommended,
+  {
+    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     languageOptions: {
       globals: { ...globals.browser, ...globals.node },
+      parser: tsParser,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
         },
+        ecmaVersion: 'latest',
       },
+    },
+    rules: {
+      'react/no-unescaped-entities': 'off',
+      'react/prop-types': 'off',
     },
   },
   prettier,
