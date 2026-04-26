@@ -1,13 +1,7 @@
 import { memo, type FC } from 'react'
+import { IPizzaProps } from './types'
 
-interface PizzaProps {
-  name: string
-  description: string
-  image: string
-}
-
-const Pizza: FC<PizzaProps> = memo(({ name, description, image }) => {
-  console.info('🚀 -> Pizza -> name:', name)
+const Pizza: FC<IPizzaProps> = memo(({ name, description, image }) => {
   return (
     <div className="pizza">
       <h1>{name}</h1>

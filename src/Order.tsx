@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Pizza from './Pizza'
 import axios from 'axios'
+import { IPizza, PizzaSize } from './types'
 
 const PIZZA_SIZES = [
   {
@@ -25,23 +26,11 @@ const intl = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 })
 
-type PizzaSize = 'S' | 'M' | 'L'
-interface IPizza {
-  id: string
-  name: string
-  description: string
-  sizes: Record<PizzaSize, number>
-  category: string
-  image: string
-}
-
 function Order() {
   const [loading, setLoading] = useState<boolean>(true)
   const [pizzas, setPizzas] = useState<IPizza[]>([])
   const [pizzaType, setPizzaType] = useState<string>('pepperoni')
   const [pizzaSize, setPizzaSize] = useState<PizzaSize>('M')
-  let selectedPizza: IPizza | undefined = undefined
-  let selectedPizzaPrice = 0
 
   const fetchData = async () => {
     // Simulate delay
@@ -59,8 +48,8 @@ function Order() {
     return <>Loading...</>
   }
 
-  selectedPizza = pizzas.find((pizza) => pizza.id === pizzaType)
-  selectedPizzaPrice = selectedPizza?.sizes[pizzaSize] ?? 0
+  const selectedPizza = pizzas.find((pizza) => pizza.id === pizzaType)
+  const selectedPizzaPrice = selectedPizza?.sizes[pizzaSize] ?? 0
 
   return (
     <div className="order">
