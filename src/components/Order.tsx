@@ -4,24 +4,12 @@ import axios from 'axios'
 import { IPizza, PizzaSize } from '../types'
 import { intl } from '../helpers'
 import { PIZZA_SIZES } from '../constants'
+import { usePizzas } from '../hooks/usePizzas'
 
 function Order() {
-  const [loading, setLoading] = useState<boolean>(true)
-  const [pizzas, setPizzas] = useState<IPizza[]>([])
   const [pizzaType, setPizzaType] = useState<string>('pepperoni')
   const [pizzaSize, setPizzaSize] = useState<PizzaSize>('M')
-
-  const fetchData = async () => {
-    // Simulate delay
-    // await new Promise((resolve) => setTimeout(resolve, 5000))
-    const { data } = await axios.get('/api/pizzas')
-    setPizzas(data.sort((a: IPizza, b: IPizza) => a.name.localeCompare(b.name)))
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
+  const { pizzas, loading } = usePizzas()
 
   if (loading) {
     return <>Loading...</>

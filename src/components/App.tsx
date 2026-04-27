@@ -1,11 +1,13 @@
 import { FC, StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import Order from './Order'
+import PizzaOfTheDay from './PizzaOfTheDay'
 
 const App: FC = () => {
   return (
     <StrictMode>
       <Order />
+      <PizzaOfTheDay />
     </StrictMode>
   )
 }
