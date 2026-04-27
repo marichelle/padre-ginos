@@ -1,3 +1,14 @@
+export interface ICartItem {
+  pizza: IPizza
+  price: number
+  size: PizzaSize
+}
+
+export interface ICartProps {
+  cart: ICartItem[]
+  checkout: () => Promise<void>
+}
+
 export interface IPizza {
   id: string
   name: string
