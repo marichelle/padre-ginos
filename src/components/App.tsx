@@ -6,8 +6,11 @@ import PizzaOfTheDay from './PizzaOfTheDay'
 const App: FC = () => {
   return (
     <StrictMode>
-      <Order />
-      <PizzaOfTheDay />
+      <div>
+        <h1 className="logo">Padre Gino's</h1>
+        <Order />
+        <PizzaOfTheDay />
+      </div>
     </StrictMode>
   )
 }
