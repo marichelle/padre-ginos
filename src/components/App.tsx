@@ -1,16 +1,22 @@
-import { FC, StrictMode } from 'react'
+import { FC, StrictMode, useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import Header from './Header'
 import Order from './Order'
 import PizzaOfTheDay from './PizzaOfTheDay'
+import { CartContext } from '../contexts'
+import { ICartItem } from '../types'
 
 const App: FC = () => {
+  const cartHook = useState<ICartItem[]>([])
   return (
     <StrictMode>
-      <div>
-        <h1 className="logo">Padre Gino's</h1>
-        <Order />
-        <PizzaOfTheDay />
-      </div>
+      <CartContext.Provider value={cartHook}>
+        <div>
+          <Header />
+          <Order />
+          <PizzaOfTheDay />
+        </div>
+      </CartContext.Provider>
     </StrictMode>
   )
 }

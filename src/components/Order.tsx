@@ -1,14 +1,15 @@
-import { SubmitEventHandler, useState } from 'react'
+import axios from 'axios'
+import { SubmitEventHandler, useContext, useState } from 'react'
 import Cart from './Cart'
 import Pizza from './Pizza'
 import { PIZZA_SIZES } from '../constants'
+import { CartContext } from '../contexts'
 import { intl } from '../helpers'
 import { usePizzas } from '../hooks/usePizzas'
 import { ICartItem, PizzaSize } from '../types'
-import axios from 'axios'
 
 function Order() {
-  const [cart, setCart] = useState<ICartItem[]>([])
+  const [cart, setCart] = useContext(CartContext)
   const [loading, setLoading] = useState<boolean>(false)
   const [pizzaType, setPizzaType] = useState<string>('pepperoni')
   const [pizzaSize, setPizzaSize] = useState<PizzaSize>('M')
