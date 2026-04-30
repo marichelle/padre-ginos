@@ -21,7 +21,7 @@ export interface IPizza {
 export interface IPizzaProps {
   name: string
   description: string
-  image: string
+  image?: string
 }
 
 export type PizzaSize = 'S' | 'M' | 'L'
